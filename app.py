@@ -1,9 +1,8 @@
 from flask import Flask, render_template, jsonify, request, send_file
-import random
 import json
 import os
 from datetime import datetime, timedelta
-from PIL import Image
+import base64
 import io
 
 app = Flask(__name__)
@@ -23,14 +22,10 @@ def save_image():
         if not image_data:
             return jsonify({'success': False, 'message': '图片数据缺失'})
 
-        import base64
         header, encoded = image_data.split(',', 1)
         image_bytes = base64.b64decode(encoded)
 
-        img = Image.open(io.BytesIO(image_bytes))
-
-        output = io.BytesIO()
-        img.save(output, format='PNG')
+        output = io.BytesIO(image_bytes)
         output.seek(0)
 
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')

@@ -2,7 +2,7 @@ services:
   - type: web
     name: dress-up-blind-box
     env: python
-    buildCommand: apt-get update && apt-get install -y libjpeg-dev zlib1g-dev && pip install -r requirements.txt
+    buildCommand: pip install --only-binary :all: -r requirements.txt
     startCommand: python app.py
     plan: free
     autoDeploy: true
