@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小白的换装盲盒</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container" id="container">
+        <canvas id="saveCanvas" class="save-canvas"></canvas>
+        
+        <div class="header">
+            <div class="title">
+                <img src="{{ url_for('static', filename='images/icons/aries.png') }}" class="title-icon">
+                <span class="title-text">小白的换装盲盒</span>
+            </div>
+            <div class="draw-count">
+                <span class="count-icon">✨</span>
+                剩余: <span id="drawCount">15</span> 次
+            </div>
+            <div class="header-right">
+                <button class="bg-btn" id="bgBtn">换背景</button>
+                <div class="settings-icon" id="settingsIcon">
+                    <img src="{{ url_for('static', filename='images/icons/settings.png') }}" alt="设置">
+                </div>
+            </div>
+        </div>
+
+        <div class="character-area" id="characterArea">
+            <div class="character" id="character">
+                <img class="base-body" id="baseBody" 
+                     src="{{ url_for('static', filename='images/characters/base.png') }}" 
+                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjUwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iI0ZGRTRDNCIvPjxjaXJjbGUgY3g9IjEyNSIgY3k9IjgwIiByPSI0MCIgZmlsbD0iI0ZGRTRDNCIvPjwvc3ZnPg=='">
+                
+                <div class="clothing-layer" id="clothingLayer">
+                </div>
+            </div>
+
+            <div class="gift-box" id="giftBox">
+                <div class="box-outer"></div>
+                <div class="box-inner">✨</div>
+            </div>
+
+            <div class="confetti" id="confetti"></div>
+        </div>
+
+        <div class="buttons-left" id="buttonsLeft">
+        </div>
+
+        <div class="buttons-right" id="buttonsRight">
+        </div>
+
+        <div class="footer">
+            <button class="reset-btn" id="resetBtn">重置</button>
+            <button class="save-btn" id="saveBtn">保存</button>
+        </div>
+        
+        <div class="bottom-right">
+            <button class="bg-btn redeem-btn" id="redeemBtn">兑换码</button>
+            <div class="wechat-icon" id="wechatIcon">
+                <img src="{{ url_for('static', filename='images/icons/official-account.png') }}" alt="微信公众号">
+                <div class="wechat-popup" id="wechatPopup">
+                    <img src="{{ url_for('static', filename='images/icons/QR.jpg') }}" alt="公众号二维码" class="qr-code">
+                    <div class="wechat-text">关注公众号领取额外换装次数</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel redeem-panel" id="redeemPanel">
+            <div class="panel-header">兑换码</div>
+            <div class="redeem-content">
+                <input type="text" class="redeem-input" id="redeemInput" placeholder="请输入兑换码">
+            </div>
+            <div class="panel-actions">
+                <button class="cancel-btn" id="cancelRedeemBtn">取消</button>
+                <button class="confirm-btn" id="confirmRedeemBtn">确认</button>
+            </div>
+        </div>
+
+        <div class="mask" id="mask"></div>
+
+        <div class="panel bg-panel" id="bgPanel">
+            <div class="panel-header">选择背景</div>
+            <div class="bg-list" id="bgList">
+            </div>
+        </div>
+
+        <div class="panel reset-panel" id="resetPanel">
+            <div class="panel-header">选择要重置的部位</div>
+            <div class="reset-list" id="resetList">
+            </div>
+            <div class="panel-actions">
+                <button class="cancel-btn" id="cancelResetBtn">取消</button>
+                <button class="confirm-btn" id="confirmResetBtn">确认</button>
+            </div>
+        </div>
+
+        <div class="panel save-panel" id="savePanel">
+            <div class="panel-header">保存换装成果</div>
+            <div class="save-options">
+                <button class="save-option" id="saveImageBtn">
+                    <div class="save-icon">📷</div>
+                    <div>保存图片</div>
+                </button>
+            </div>
+        </div>
+
+        <div class="guide-panel" id="guidePanel">
+            <div class="guide-content">
+                <div class="guide-title">🎀 欢迎来到盲盒换装！</div>
+                <div class="guide-text">1. 点击左右两侧的衣物分类</div>
+                <div class="guide-text">2. 随机抽取一件衣物自动穿上</div>
+                <div class="guide-text">3. 有 <span class="highlight">5% 概率</span> 抽到隐藏款哦！</div>
+                <div class="guide-text">4. 满意后可以保存图片/视频</div>
+                <button class="close-guide" id="closeGuideBtn">开始游戏</button>
+            </div>
+        </div>
+
+        <div class="toast" id="toast"></div>
+        
+        <div class="hidden-popup" id="hiddenPopup">
+            <div class="hidden-content">
+                <div class="hidden-title">🎉 隐藏款！</div>
+                <div class="hidden-text" id="hiddenText">恭喜抽中隐藏款！</div>
+            </div>
+        </div>
+        
+        <div class="panel settings-panel" id="settingsPanel">
+            <div class="panel-header">设置</div>
+            <div class="settings-content">
+                <div class="settings-section">
+                    <div class="setting-item">
+                        <span>背景音乐</span>
+                        <label class="toggle">
+                            <input type="checkbox" id="bgMusicToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>音效</span>
+                        <label class="toggle">
+                            <input type="checkbox" id="soundEffectsToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>玩法</h3>
+                    <ul>
+                        <li>点击左右两侧的衣物分类，随机抽取一件衣物自动穿上，有 5% 概率抽到隐藏款，不满意可点击重置按钮，取消穿着该分类衣物，可按住鼠标拖拽人物位置，满意后可以保存图片。</li>
+                        <li>首次访问，会有 80 次初始换装次数，每日登录奖励 20 次，仅当日有效；次月 1 日将清零剩余次数，并重置为 80 次。</li>
+                        <li>有任何建议，欢迎关注公众号留言。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-actions">
+                <button class="confirm-btn" id="closeSettingsBtn">关闭</button>
+            </div>
+        </div>
+        
+        <!-- 音频元素 -->
+        <audio id="bgMusic" src="{{ url_for('static', filename='audio/background.mp3') }}" loop></audio>
+        <audio id="normalSound" src="{{ url_for('static', filename='audio/normal.wav') }}"></audio>
+        <audio id="rareSound" src="{{ url_for('static', filename='audio/rare.wav') }}"></audio>
+        <audio id="cameraSound" src="{{ url_for('static', filename='audio/camera.wav') }}"></audio>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
