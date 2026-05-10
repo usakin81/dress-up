@@ -748,3 +748,8 @@ document.getElementById('closeSettingsBtn').onclick = function() {
 document.getElementById('mask').onclick = function() {
     closeAllPanels();
 };
+
+// 关闭引导弹窗按钮点击事件
+document.getElementById('closeGuideBtn').onclick = function() {
+    document.getElementById('guidePanel').classList.remove('show');
+};
