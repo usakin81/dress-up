@@ -1140,18 +1140,18 @@ input:checked + .toggle-slider:before {
     }
 
     .header-right {
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 10px;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
     }
 
     .bottom-right {
         position: fixed;
-        top: 85px;
-        right: 10px;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 10px;
+        bottom: 100px;
+        right: 15px;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
         padding: 10px;
         width: auto;
         z-index: 200;
@@ -1159,12 +1159,12 @@ input:checked + .toggle-slider:before {
 
     .wechat-popup {
         position: absolute;
-        top: 100%;
-        bottom: auto;
-        left: 0;
-        right: auto;
-        margin-top: 10px;
-        margin-bottom: 0;
+        bottom: 100%;
+        top: auto;
+        right: 0;
+        left: auto;
+        margin-bottom: 10px;
+        margin-top: 0;
     }
 
     .reset-btn, .save-btn {
