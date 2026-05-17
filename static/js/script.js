@@ -14,9 +14,9 @@ const gameData = {
         ]
     },
     backgrounds: [
-        { id: 'livingroom', name: '新中式客厅', image: 'bg_livingroom.png', color: '#E8D5C4' },
-        { id: 'bedroom', name: '公主卧室', image: 'bg_bedroom.png', color: '#F0E6D2' },
-        { id: 'stage', name: '晚会舞台', image: 'bg_stage.png', color: '#D4C4B0' }
+        { id: 'livingroom', name: '新中式客厅', image: 'bg_livingroom.jpg', color: '#E8D5C4' },
+        { id: 'bedroom', name: '公主卧室', image: 'bg_bedroom.jpg', color: '#F0E6D2' },
+        { id: 'stage', name: '晚会舞台', image: 'bg_stage.jpg', color: '#D4C4B0' }
     ],
     clothes: {
         hat: [
