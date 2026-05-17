@@ -107,35 +107,31 @@ function initDragAndDrop() {
     let isDragging = false;
     let startX, startY, offsetX, offsetY;
     
-    character.addEventListener('mousedown', function(e) {
+    function startDrag(clientX, clientY) {
         isDragging = true;
         character.classList.add('dragging');
         
         const rect = character.getBoundingClientRect();
-        startX = e.clientX;
-        startY = e.clientY;
+        startX = clientX;
+        startY = clientY;
         offsetX = startX - rect.left;
         offsetY = startY - rect.top;
         
-        // 保存当前的transform样式
         const currentTransform = character.style.transform;
         
-        // 只有在拖动时才清除transform样式
         if (!currentTransform || currentTransform === 'translate(-50%, -50%)') {
             character.style.transform = 'none';
         }
-        
-        e.preventDefault();
-    });
+    }
     
-    document.addEventListener('mousemove', function(e) {
+    function moveDrag(clientX, clientY) {
         if (!isDragging) return;
         
         const characterArea = document.getElementById('characterArea');
         const areaRect = characterArea.getBoundingClientRect();
         
-        let newX = e.clientX - offsetX - areaRect.left;
-        let newY = e.clientY - offsetY - areaRect.top;
+        let newX = clientX - offsetX - areaRect.left;
+        let newY = clientY - offsetY - areaRect.top;
         
         const characterRect = character.getBoundingClientRect();
         
@@ -144,21 +140,43 @@ function initDragAndDrop() {
         
         character.style.left = newX + 'px';
         character.style.top = newY + 'px';
-    });
+    }
     
-    document.addEventListener('mouseup', function() {
+    function endDrag() {
         if (isDragging) {
             isDragging = false;
             character.classList.remove('dragging');
         }
+    }
+    
+    // 鼠标事件
+    character.addEventListener('mousedown', function(e) {
+        startDrag(e.clientX, e.clientY);
+        e.preventDefault();
     });
     
-    document.addEventListener('mouseleave', function() {
-        if (isDragging) {
-            isDragging = false;
-            character.classList.remove('dragging');
-        }
+    document.addEventListener('mousemove', function(e) {
+        moveDrag(e.clientX, e.clientY);
     });
+    
+    document.addEventListener('mouseup', endDrag);
+    document.addEventListener('mouseleave', endDrag);
+    
+    // 触屏事件
+    character.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        startDrag(touch.clientX, touch.clientY);
+        e.preventDefault();
+    }, { passive: false });
+    
+    document.addEventListener('touchmove', function(e) {
+        const touch = e.touches[0];
+        moveDrag(touch.clientX, touch.clientY);
+        e.preventDefault();
+    }, { passive: false });
+    
+    document.addEventListener('touchend', endDrag);
+    document.addEventListener('touchcancel', endDrag);
 }
 
 function initGame() {
