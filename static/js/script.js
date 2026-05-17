@@ -518,63 +518,27 @@ function saveImage() {
     const character = document.getElementById('character');
     const clothingLayer = document.getElementById('clothingLayer');
     
-    // 绘制背景
     const bgImage = new Image();
     bgImage.src = document.getElementById('container').style.backgroundImage.replace(/url\(['"]?([^'"]*)['"]?\)/, '$1');
     bgImage.onload = function() {
-        // 设置画布尺寸与背景图片一致
         canvas.width = bgImage.width;
         canvas.height = bgImage.height;
         
-        // 绘制背景
         ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
         
-        // 计算缩放比例
-        const characterArea = document.getElementById('characterArea');
-        const areaRect = characterArea.getBoundingClientRect();
-        
-        // 计算游戏区域与背景图片的比例
-        const bgWidth = bgImage.width;
-        const bgHeight = bgImage.height;
-        const displayBgWidth = areaRect.width;
-        const displayBgHeight = areaRect.height;
-        
-        // 计算背景在游戏中的显示比例（类似 background-size: cover）
-        const bgRatio = bgWidth / bgHeight;
-        const displayRatio = displayBgWidth / displayBgHeight;
-        
-        let bgDisplayWidth, bgDisplayHeight, bgDisplayX, bgDisplayY;
-        if (displayRatio > bgRatio) {
-            bgDisplayHeight = displayBgHeight;
-            bgDisplayWidth = bgDisplayHeight * bgRatio;
-            bgDisplayX = (displayBgWidth - bgDisplayWidth) / 2;
-            bgDisplayY = 0;
-        } else {
-            bgDisplayWidth = displayBgWidth;
-            bgDisplayHeight = bgDisplayWidth / bgRatio;
-            bgDisplayX = 0;
-            bgDisplayY = (displayBgHeight - bgDisplayHeight) / 2;
-        }
-        
-        // 计算缩放比例，用于转换人物和衣服的尺寸
-        const scaleX = bgWidth / bgDisplayWidth;
-        const scaleY = bgHeight / bgDisplayHeight;
-        const scale = Math.max(scaleX, scaleY);
-        
-        // 获取人物在游戏中的位置
-        const charRect = character.getBoundingClientRect();
-        const charXRelative = (charRect.left - areaRect.left - bgDisplayX) * scale;
-        const charYRelative = (charRect.top - areaRect.top - bgDisplayY) * scale;
-        const charWidth = charRect.width * scale;
-        const charHeight = charRect.height * scale;
-        
-        // 绘制人物
         const charImage = new Image();
         charImage.src = character.querySelector('img').src;
         charImage.onload = function() {
-            ctx.drawImage(charImage, charXRelative, charYRelative, charWidth, charHeight);
+            const targetHeight = 800;
+            const scale = targetHeight / charImage.height;
+            const finalWidth = charImage.width * scale;
+            const finalHeight = targetHeight;
             
-            // 绘制衣物
+            const centerX = (canvas.width - finalWidth) / 2;
+            const centerY = (canvas.height - finalHeight) / 2;
+            
+            ctx.drawImage(charImage, centerX, centerY, finalWidth, finalHeight);
+            
             const clothingItems = clothingLayer.querySelectorAll('.clothing-item');
             let itemsLoaded = 0;
             
@@ -589,13 +553,12 @@ function saveImage() {
                     const clothImage = new Image();
                     clothImage.src = img.src;
                     clothImage.onload = function() {
-                        const itemRect = item.getBoundingClientRect();
-                        const clothXRelative = (itemRect.left - areaRect.left - bgDisplayX) * scale;
-                        const clothYRelative = (itemRect.top - areaRect.top - bgDisplayY) * scale;
-                        const clothWidth = itemRect.width * scale;
-                        const clothHeight = itemRect.height * scale;
+                        const clothWidth = clothImage.width * scale;
+                        const clothHeight = clothImage.height * scale;
+                        const clothX = centerX;
+                        const clothY = centerY;
                         
-                        ctx.drawImage(clothImage, clothXRelative, clothYRelative, clothWidth, clothHeight);
+                        ctx.drawImage(clothImage, clothX, clothY, clothWidth, clothHeight);
                         itemsLoaded++;
                         
                         if (itemsLoaded === clothingItems.length) {
