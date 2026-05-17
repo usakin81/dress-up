@@ -600,6 +600,7 @@ function showToast(message) {
 function openPanel(id) {
     closeAllPanels();
     document.getElementById(id).classList.add('show');
+    document.getElementById('mask').classList.add('show');
 }
 
 function closeAllPanels() {
@@ -610,6 +611,7 @@ function closeAllPanels() {
         item.classList.remove('selected');
     });
     gameState.selectedResetItems = [];
+    document.getElementById('mask').classList.remove('show');
 }
 
 // 音频控制函数

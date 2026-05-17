@@ -130,6 +130,8 @@ body {
 
 .settings-content {
     margin-bottom: 25px;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .settings-section {
@@ -142,10 +144,40 @@ body {
     align-items: center;
     padding: 12px 0;
     border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
 }
 
 .setting-item:last-child {
     border-bottom: none;
+}
+
+.settings-section h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.settings-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.settings-section li {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.settings-section li:before {
+    content: "-";
+    position: absolute;
+    left: 0;
+    color: #FF1493;
+    font-weight: bold;
 }
 
 .toggle {
@@ -641,8 +673,9 @@ input:checked + .toggle-slider:before {
     transform: translateY(100%);
     transition: transform 0.3s ease-out;
     z-index: 201;
-    max-height: 60vh;
+    max-height: 70vh;
     overflow-y: auto;
+    max-height: calc(100vh - 100px);
 }
 
 .panel.show {
@@ -1072,5 +1105,71 @@ input:checked + .toggle-slider:before {
         width: auto;
         min-width: 50px;
         padding: 8px 12px;
+    }
+}
+
+@media (orientation: portrait) {
+    body {
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .container {
+        position: relative;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+    }
+    
+    .character-area {
+        position: relative;
+        height: auto;
+        min-height: 60vh;
+        padding: 20px 0;
+    }
+    
+    .character {
+        position: relative;
+        height: auto;
+        max-height: 60vh;
+        width: auto;
+        max-width: 80vw;
+        left: auto;
+        top: auto;
+        transform: none;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .header {
+        position: relative;
+        height: auto;
+        min-height: 80px;
+        padding: 10px;
+    }
+    
+    .footer {
+        position: relative;
+        height: auto;
+        padding: 15px;
+    }
+    
+    .bottom-right {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        justify-content: center;
+        padding: 10px;
+        margin-top: 10px;
+    }
+    
+    .panel {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-height: 80vh;
+        overflow-y: auto;
     }
 }
