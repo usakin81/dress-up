@@ -529,7 +529,7 @@ function saveImage() {
         const charImage = new Image();
         charImage.src = character.querySelector('img').src;
         charImage.onload = function() {
-            const targetHeight = 800;
+            const targetHeight = 900;
             const scale = targetHeight / charImage.height;
             const finalWidth = charImage.width * scale;
             const finalHeight = targetHeight;
