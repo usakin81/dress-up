@@ -105,22 +105,39 @@ document.addEventListener('DOMContentLoaded', function() {
 function initDragAndDrop() {
     const character = document.getElementById('character');
     let isDragging = false;
-    let startX, startY, offsetX, offsetY;
+    let startX, startY;
+    let initialLeft, initialTop;
     
     function startDrag(clientX, clientY) {
         isDragging = true;
         character.classList.add('dragging');
         
-        const rect = character.getBoundingClientRect();
         startX = clientX;
         startY = clientY;
-        offsetX = startX - rect.left;
-        offsetY = startY - rect.top;
         
+        // 获取当前位置
+        const currentLeft = character.style.left;
+        const currentTop = character.style.top;
         const currentTransform = character.style.transform;
         
-        if (!currentTransform || currentTransform === 'translate(-50%, -50%)') {
+        if ((!currentLeft || !currentTop) && 
+            (!currentTransform || currentTransform === 'translate(-50%, -50%)')) {
+            // 人物还没被拖拽过，使用相对区域中心的初始位置
+            const characterArea = document.getElementById('characterArea');
+            const areaRect = characterArea.getBoundingClientRect();
+            const charRect = character.getBoundingClientRect();
+            
+            initialLeft = charRect.left - areaRect.left;
+            initialTop = charRect.top - areaRect.top;
+            
+            // 清除transform，使用绝对定位
             character.style.transform = 'none';
+            character.style.left = initialLeft + 'px';
+            character.style.top = initialTop + 'px';
+        } else {
+            // 人物已经被拖拽过，使用当前位置
+            initialLeft = parseFloat(currentLeft) || 0;
+            initialTop = parseFloat(currentTop) || 0;
         }
     }
     
@@ -130,8 +147,8 @@ function initDragAndDrop() {
         const characterArea = document.getElementById('characterArea');
         const areaRect = characterArea.getBoundingClientRect();
         
-        let newX = clientX - offsetX - areaRect.left;
-        let newY = clientY - offsetY - areaRect.top;
+        let newX = initialLeft + (clientX - startX);
+        let newY = initialTop + (clientY - startY);
         
         const characterRect = character.getBoundingClientRect();
         
@@ -498,53 +515,73 @@ function saveImage() {
     playSound('cameraSound');
     const canvas = document.getElementById('saveCanvas');
     const ctx = canvas.getContext('2d');
-    const characterArea = document.getElementById('characterArea');
     const character = document.getElementById('character');
     const clothingLayer = document.getElementById('clothingLayer');
-    
-    // 设置画布尺寸
-    canvas.width = characterArea.offsetWidth;
-    canvas.height = characterArea.offsetHeight;
     
     // 绘制背景
     const bgImage = new Image();
     bgImage.src = document.getElementById('container').style.backgroundImage.replace(/url\(['"]?([^'"]*)['"]?\)/, '$1');
     bgImage.onload = function() {
-        // 计算背景图片的显示比例，模拟CSS background-size: cover
-        const canvasRatio = canvas.width / canvas.height;
-        const imageRatio = bgImage.width / bgImage.height;
-        let drawWidth, drawHeight, drawX, drawY;
+        // 设置画布尺寸与背景图片一致
+        canvas.width = bgImage.width;
+        canvas.height = bgImage.height;
         
-        if (canvasRatio > imageRatio) {
-            // 画布更宽，以高度为基准
-            drawHeight = canvas.height;
-            drawWidth = drawHeight * imageRatio;
-            drawX = (canvas.width - drawWidth) / 2;
-            drawY = 0;
+        // 绘制背景
+        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+        
+        // 计算缩放比例
+        const characterArea = document.getElementById('characterArea');
+        const areaRect = characterArea.getBoundingClientRect();
+        
+        // 计算游戏区域与背景图片的比例
+        const bgWidth = bgImage.width;
+        const bgHeight = bgImage.height;
+        const displayBgWidth = areaRect.width;
+        const displayBgHeight = areaRect.height;
+        
+        // 计算背景在游戏中的显示比例（类似 background-size: cover）
+        const bgRatio = bgWidth / bgHeight;
+        const displayRatio = displayBgWidth / displayBgHeight;
+        
+        let bgDisplayWidth, bgDisplayHeight, bgDisplayX, bgDisplayY;
+        if (displayRatio > bgRatio) {
+            bgDisplayHeight = displayBgHeight;
+            bgDisplayWidth = bgDisplayHeight * bgRatio;
+            bgDisplayX = (displayBgWidth - bgDisplayWidth) / 2;
+            bgDisplayY = 0;
         } else {
-            // 画布更高，以宽度为基准
-            drawWidth = canvas.width;
-            drawHeight = drawWidth / imageRatio;
-            drawX = 0;
-            drawY = (canvas.height - drawHeight) / 2;
+            bgDisplayWidth = displayBgWidth;
+            bgDisplayHeight = bgDisplayWidth / bgRatio;
+            bgDisplayX = 0;
+            bgDisplayY = (displayBgHeight - bgDisplayHeight) / 2;
         }
         
-        // 绘制背景图片，保持与游戏界面一致的显示方式
-        ctx.drawImage(bgImage, drawX, drawY, drawWidth, drawHeight);
+        // 计算缩放比例，用于转换人物和衣服的尺寸
+        const scaleX = bgWidth / bgDisplayWidth;
+        const scaleY = bgHeight / bgDisplayHeight;
+        const scale = Math.max(scaleX, scaleY);
+        
+        // 获取人物在游戏中的位置
+        const charRect = character.getBoundingClientRect();
+        const charXRelative = (charRect.left - areaRect.left - bgDisplayX) * scale;
+        const charYRelative = (charRect.top - areaRect.top - bgDisplayY) * scale;
+        const charWidth = charRect.width * scale;
+        const charHeight = charRect.height * scale;
         
         // 绘制人物
         const charImage = new Image();
         charImage.src = character.querySelector('img').src;
         charImage.onload = function() {
-            const charRect = character.getBoundingClientRect();
-            const areaRect = characterArea.getBoundingClientRect();
-            const charX = charRect.left - areaRect.left;
-            const charY = charRect.top - areaRect.top;
-            ctx.drawImage(charImage, charX, charY, charRect.width, charRect.height);
+            ctx.drawImage(charImage, charXRelative, charYRelative, charWidth, charHeight);
             
             // 绘制衣物
             const clothingItems = clothingLayer.querySelectorAll('.clothing-item');
             let itemsLoaded = 0;
+            
+            if (clothingItems.length === 0) {
+                saveCanvasAsImage(canvas);
+                return;
+            }
             
             clothingItems.forEach(item => {
                 const img = item.querySelector('img');
@@ -553,12 +590,15 @@ function saveImage() {
                     clothImage.src = img.src;
                     clothImage.onload = function() {
                         const itemRect = item.getBoundingClientRect();
-                        const clothX = itemRect.left - areaRect.left;
-                        const clothY = itemRect.top - areaRect.top;
-                        ctx.drawImage(clothImage, clothX, clothY, itemRect.width, itemRect.height);
+                        const clothXRelative = (itemRect.left - areaRect.left - bgDisplayX) * scale;
+                        const clothYRelative = (itemRect.top - areaRect.top - bgDisplayY) * scale;
+                        const clothWidth = itemRect.width * scale;
+                        const clothHeight = itemRect.height * scale;
+                        
+                        ctx.drawImage(clothImage, clothXRelative, clothYRelative, clothWidth, clothHeight);
                         itemsLoaded++;
+                        
                         if (itemsLoaded === clothingItems.length) {
-                            // 所有图片加载完成后保存
                             saveCanvasAsImage(canvas);
                         }
                     };
@@ -569,10 +609,6 @@ function saveImage() {
                     }
                 }
             });
-            
-            if (clothingItems.length === 0) {
-                saveCanvasAsImage(canvas);
-            }
         };
     };
 }
