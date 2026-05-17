@@ -974,199 +974,117 @@ input:checked + .toggle-slider:before {
         flex-wrap: wrap;
         gap: 5px;
     }
-    
+
     .title {
         font-size: 16px;
         order: 1;
         width: 100%;
         justify-content: center;
     }
-    
+
     .draw-count {
         font-size: 13px;
         padding: 6px 12px;
         order: 2;
     }
-    
+
     .draw-count span {
         font-size: 16px;
     }
-    
+
     .bg-btn {
         padding: 8px 16px;
         font-size: 13px;
     }
-    
+
     .header-right {
         order: 3;
     }
-    
+
     .character-area {
         left: 10px;
         right: 10px;
         top: 110px;
         bottom: 150px;
     }
-    
+
     .character {
         height: 60vh;
         max-width: 70vw;
     }
-    
+
     .buttons-left, .buttons-right {
         width: 45px;
         top: 120px;
     }
-    
+
     .category-btn {
         min-height: 35px;
         font-size: 10px;
         border-radius: 8px;
         padding: 4px;
     }
-    
+
     .footer {
         height: 80px;
         gap: 15px;
         padding: 0 15px;
     }
-    
+
     .reset-btn, .save-btn {
         padding: 10px 25px;
         font-size: 13px;
     }
-    
+
     .bottom-right {
         bottom: 20px;
         right: 15px;
         gap: 10px;
     }
-    
+
     .redeem-btn {
         padding: 8px 18px;
         font-size: 13px;
     }
-    
+
     .wechat-icon {
         width: 40px;
         height: 40px;
     }
-    
+
     .panel {
         padding: 20px;
         max-height: 70vh;
     }
-    
+
     .guide-content {
         padding: 25px;
         margin: 15px;
     }
-    
+
     .guide-title {
         font-size: 22px;
     }
-    
+
     .guide-text {
         font-size: 14px;
     }
 }
 
-@media (max-width: 480px) {
-    .buttons-left, .buttons-right {
-        position: fixed;
-        bottom: 90px;
-        width: 50%;
-        height: auto;
-        flex-direction: row;
-        justify-content: center;
-        gap: 8px;
-        padding: 10px 5px;
-        top: auto;
-        flex-wrap: wrap;
-    }
-    
-    .buttons-left {
-        left: 0;
-    }
-    
-    .buttons-right {
-        right: 0;
-    }
-    
-    .character-area {
-        left: 10px;
-        right: 10px;
-        bottom: 180px;
-    }
-    
-
-    
-    .category-btn {
-        width: auto;
-        min-width: 50px;
-        padding: 8px 12px;
-    }
-}
-
 @media (orientation: portrait) {
     body {
         overflow-y: auto;
         height: auto;
         min-height: 100vh;
     }
-    
+
     .container {
         position: relative;
         height: auto;
         min-height: 100vh;
         overflow-y: auto;
     }
-    
-    .character-area {
-        position: absolute;
-        top: 180px;
-        left: 10px;
-        right: 10px;
-        bottom: 100px;
-        height: auto;
-        min-height: calc(100vh - 280px);
-        padding: 0;
-    }
-    
-    .character {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        height: 60vh;
-        width: auto;
-        max-width: 80vw;
-    }
-    
-    .clothing-layer {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-    }
-    
-    .clothing-item {
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-    }
-    
-    .clothing-item img {
-        width: auto;
-        height: auto;
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
-    
+
     .header {
         position: fixed;
         top: 0;
@@ -1178,7 +1096,7 @@ input:checked + .toggle-slider:before {
         z-index: 200;
         background: transparent;
     }
-    
+
     .footer {
         position: fixed;
         bottom: 0;
@@ -1192,155 +1110,41 @@ input:checked + .toggle-slider:before {
 
     .buttons-left, .buttons-right {
         position: fixed;
-        width: 45%;
+        width: 50px;
         height: auto;
-        flex-direction: row;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: flex-start;
         gap: 8px;
-        padding: 10px 5px;
-        top: auto;
-        bottom: 60px;
-        flex-wrap: wrap;
-        z-index: 200;
-    }
-
-    .buttons-left {
-        left: 0;
-    }
-
-    .buttons-right {
-        right: 0;
-    }
-
-    .category-btn {
-<<<<<<< HEAD
-=======
-        width: auto;
-        min-width: 50px;
-        padding: 8px 12px;
-    }
-}
-
-@media (orientation: portrait) {
-    body {
-        overflow-y: auto;
-        height: auto;
-        min-height: 100vh;
-    }
-    
-    .container {
-        position: relative;
-        height: auto;
-        min-height: 100vh;
-        overflow-y: auto;
-    }
-    
-    .character-area {
-        position: absolute;
-        top: 180px;
-        left: 10px;
-        right: 10px;
-        bottom: 100px;
-        height: auto;
-        min-height: calc(100vh - 280px);
-        padding: 0;
-    }
-    
-    .character {
-        position: absolute;
-        left: 50%;
+        padding: 10px 0;
         top: 50%;
-        transform: translate(-50%, -50%);
-        height: 60vh;
-        width: auto;
-        max-width: 80vw;
-    }
-    
-    .clothing-layer {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-    }
-    
-    .clothing-item {
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-    }
-    
-    .clothing-item img {
-        width: auto;
-        height: auto;
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
-    
-    .header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: auto;
-        min-height: 80px;
-        padding: 10px;
-        z-index: 200;
-        background: transparent;
-    }
-    
-    .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: auto;
-        padding: 15px;
-        z-index: 200;
-        background: transparent;
-    }
-
-    .buttons-left, .buttons-right {
-        position: fixed;
-        width: 45%;
-        height: auto;
-        flex-direction: row;
-        justify-content: center;
-        gap: 8px;
-        padding: 10px 5px;
-        top: auto;
-        bottom: 60px;
-        flex-wrap: wrap;
-        z-index: 200;
+        transform: translateY(-50%);
+        flex-wrap: nowrap;
+        z-index: 10;
     }
 
     .buttons-left {
-        left: 0;
+        left: 5px;
     }
 
     .buttons-right {
-        right: 0;
+        right: 5px;
     }
 
     .category-btn {
->>>>>>> 0621868 (Fix portrait mode: move clothing buttons to bottom)
-        min-height: 40px;
-        font-size: 12px;
-        padding: 6px 10px;
+        min-height: 45px;
+        font-size: 11px;
+        padding: 5px 3px;
         border-radius: 10px;
-<<<<<<< HEAD
+        width: 100%;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-    
-    .reset-btn, .save-btn {
-        padding: 12px 30px;
-        font-size: 14px;
-        min-height: 44px;
-        min-width: 80px;
+
+    .header-right {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
     }
-    
+
     .bottom-right {
         position: fixed;
         top: 85px;
@@ -1349,9 +1153,27 @@ input:checked + .toggle-slider:before {
         align-items: flex-end;
         gap: 10px;
         padding: 10px;
+        width: auto;
         z-index: 200;
     }
-    
+
+    .wechat-popup {
+        position: absolute;
+        top: 100%;
+        bottom: auto;
+        left: 0;
+        right: auto;
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+
+    .reset-btn, .save-btn {
+        padding: 12px 30px;
+        font-size: 14px;
+        min-height: 44px;
+        min-width: 80px;
+    }
+
     .panel {
         position: fixed;
         bottom: 0;
@@ -1362,41 +1184,3 @@ input:checked + .toggle-slider:before {
         z-index: 201;
     }
 }
-
-
-
-=======
-    }
-    
-    .reset-btn, .save-btn {
-        padding: 12px 30px;
-        font-size: 14px;
-        min-height: 44px;
-        min-width: 80px;
-    }
-    
-    .bottom-right {
-        position: fixed;
-        top: 85px;
-        right: 10px;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 10px;
-        padding: 10px;
-        z-index: 200;
-    }
-    
-    .panel {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        max-height: 80vh;
-        overflow-y: auto;
-        z-index: 201;
-    }
-}
-
-
-
->>>>>>> 0621868 (Fix portrait mode: move clothing buttons to bottom)
