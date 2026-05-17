@@ -1189,6 +1189,35 @@ input:checked + .toggle-slider:before {
         z-index: 200;
         background: transparent;
     }
+
+    .buttons-left, .buttons-right {
+        position: fixed;
+        width: 45%;
+        height: auto;
+        flex-direction: row;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 5px;
+        top: auto;
+        bottom: 60px;
+        flex-wrap: wrap;
+        z-index: 200;
+    }
+
+    .buttons-left {
+        left: 0;
+    }
+
+    .buttons-right {
+        right: 0;
+    }
+
+    .category-btn {
+        min-height: 40px;
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 10px;
+    }
     
     .reset-btn, .save-btn {
         padding: 12px 30px;
@@ -1218,3 +1247,6 @@ input:checked + .toggle-slider:before {
         z-index: 201;
     }
 }
+
+
+
